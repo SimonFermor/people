@@ -12,28 +12,21 @@
 
 <cfset group_name = groups.name[1]>
 
-<html>
-  <head>
-    <title><cfoutput>#group_name#</cfoutput></title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-
 <h2><cfoutput>#group_name#</cfoutput></h2>
 
 <!--- Get people in the group --->
 <cfquery name="people" datasource="people">
-  select p.id as person_id, first_name, middle_names, last_name, 
+  select p.id as people_id, first_name, middle_names, last_name, 
     ifnull(p.known_name, p.first_name) as known_name, by_line,
     date_of_birth
   from people.group_people as g
 
   inner join people.people as p
-  on p.id = g.person_id
+  on p.id = g.people_id
 
   where g.group_id = #group_id#
   and p.date_of_death is null
-  and g.removed_at is null
+  and g.deleted_at is null
 
   order by ifnull(p.known_name, p.first_name), last_name
 </cfquery>
@@ -55,12 +48,12 @@
   </div>
 
 <cfloop query="people">
-  <!--- Addresses for one person --->
+  <!--- Addresses for one people --->
   <cfquery name="addresses" datasource="people">
-    select p.person_id, p.address_id,
+    select p.people_id, p.address_id,
       a.address_1, a.address_2, a.address_3, a.city,
       a.region, a.postal_code, c.title as country
-    from people_addresses as p
+    from addresses as p
 
     inner join addresses.addresses as a
     on p.address_id = a.id
@@ -68,40 +61,42 @@
     left outer join addresses.country_codes as c
     on c.id = a.country_id
 
-    where p.person_id = #people.person_id#
-      and closed_at is null
+    where p.people_id = #people.people_id#
+      and p.deleted_at is null
       and is_primary = 1;
   </cfquery>
 
-  <!--- Phone numbers for one person --->
+  <!--- Phone numbers for one people --->
   <cfquery name="phones" datasource="people">
     select p.country_code, p.area_code, p.phone_number, t.phone_type
-    from people_phones as p
+    from phone_numbers as p
 	
     left outer join phone_types as t
     on p.phone_type_id = t.id
 
-    where p.person_id = #people.person_id#
+    where p.people_id = #people.people_id#
     and p.show = 1
-    and p.closed_at is null;
+    and p.deleted_at is null;
   </cfquery>
 
-  <!--- Email addresses for one person --->
+  <!--- Email addresses for one people --->
   <cfquery name="emails" datasource="people">
     select e.email
-    from people.people_email as e
-    where e.person_id = #people.person_id#
+    from people.email_addresses as e
+    where e.people_id = #people.people_id#
     and e.primary = 1;
   </cfquery>
 
   <cfoutput>
   <div class="div_table_row">
+    <!--- Output name --->
     <div class="div_table_cell">
       <div>
         <b>#people.known_name# #people.last_name#</b>
       </div>
     </div>
 
+    <!--- Output phone numbers --->
     <div class="div_table_cell">
         <cfloop query="phones">
             <div>
@@ -115,6 +110,7 @@
         </cfloop>
     </div>
 
+    <!--- Output address --->
     <div class="div_table_cell">
         <div>
             <cfloop query="addresses">
@@ -132,6 +128,5 @@
   </cfoutput>
 </cfloop>
 
-</div>
 </div>
 </div>
