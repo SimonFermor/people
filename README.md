@@ -1,4 +1,4 @@
 # people
 Database for names, addresses, notes and quotes
 
-Uses common files from https://github.com/SimonFermor/cfml_common
+Uses files (dependancy) from https://github.com/SimonFermor/cfml_framework
