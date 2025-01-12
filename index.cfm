@@ -26,7 +26,7 @@
 
       <cfcase value="persons">
         <cfparam name="view" default="all_persons">
-        <cfif listFindNoCase("all_persons,one_person", view)>
+        <cfif listFindNoCase("all_persons,one_person,birthdays,contact_sheet,phone_list", view)>
           <cfinclude template="includes/persons/#view#.inc">
         </cfif>
       </cfcase>
@@ -39,7 +39,14 @@
       </cfcase>
 
       <cfdefaultcase>
-        No page found
+        People
+        <ul>
+          <li><a href="/people/index.cfm?scope=persons&view=all_persons">All people</a></li>
+          <li><a href="/people/index.cfm?scope=persons&view=birthdays">Birthdays</a></li>
+          <li><a href="/people/index.cfm?scope=persons&view=phone_list">Phone List</a></li>
+          <li><a href="/people/index.cfm?scope=persons&view=contact_sheet">Contact Sheet</a></li>
+        </ul>
+      
       </cfdefaultcase>
     </cfswitch>
 

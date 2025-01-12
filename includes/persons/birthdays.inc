@@ -1,10 +1,3 @@
-<html>
-<head>
-	<title>Birthdays</title>
-	<link rel="stylesheet" href="/recipes/styles.css">
-</head>
-<body>
-
 <cfparam name="year" default = "#year(now()) + 1#">
 <cfparam name="favorites" default=0>
 <cfparam name="start_at" default = "#createdate(year, 1, 1)#">
@@ -16,7 +9,7 @@
 	ifnull(p.known_name, p.first_name) as known_name, month(p.date_of_birth) as month_number
 	from group_people as g
 	inner join people as p
-	on g.person_id = p.id
+	on g.people_id = p.id
 	where (g.group_id = #group_id#)
 	and p.id not in (190)
   order by month(p.date_of_birth), day(p.date_of_birth)
@@ -60,13 +53,3 @@
   </tr>
 </cfoutput>
 </table>
-
-<!---
-<cfinclude template="include.inc">
---->
-</body>
-
-</html>
-<!---
-</cfcache>
---->
