@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `notes` (
   `note` varchar(200) DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 

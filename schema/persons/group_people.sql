@@ -18,8 +18,9 @@ CREATE TABLE IF NOT EXISTS `group_people` (
   `group_id` int(11) DEFAULT NULL,
   `people_id` int(11) DEFAULT NULL,
   `deleted_at` date DEFAULT NULL,
+  `mailing_label_name` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=539 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=571 DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 

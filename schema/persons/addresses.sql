@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
   `is_primary` bit(1) DEFAULT b'1',
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 

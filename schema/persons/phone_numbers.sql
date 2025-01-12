@@ -15,7 +15,7 @@
 CREATE TABLE IF NOT EXISTS `phone_numbers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
-  `person_id` int(11) DEFAULT NULL,
+  `people_id` int(11) DEFAULT NULL,
   `country_code` int(11) DEFAULT NULL,
   `area_code` int(11) DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `phone_numbers` (
   `note` varchar(50) DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8;
 
 -- Data exporting was unselected.
 
