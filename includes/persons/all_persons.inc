@@ -4,32 +4,13 @@
 <cfset column_counter = "">
 
 <!--- Get group details --->
-<cfquery name="groups" datasource="people">
-	select id, name, description
-	from groups
-	where id = '#group_id#';
-</cfquery>
-
-<cfset group_name = groups.name[1]>
+<cfset group = new people.functions.queries.groups().group(group_id)>
+<cfset group_name = group.name[1]>
 
 <h2><cfoutput>#group_name#</cfoutput></h2>
 
 <!--- Get people in the group --->
-<cfquery name="people" datasource="people">
-  select p.id as people_id, first_name, middle_names, last_name, 
-    ifnull(p.known_name, p.first_name) as known_name, by_line,
-    date_of_birth
-  from people.group_people as g
-
-  inner join people.people as p
-  on p.id = g.people_id
-
-  where g.group_id = #group_id#
-  and p.date_of_death is null
-  and g.deleted_at is null
-
-  order by ifnull(p.known_name, p.first_name), last_name
-</cfquery>
+<cfset group_people = new people.functions.queries.groups().group_people(group_id)>
 
 <div class="div_table">
 <div class="div_table_body">
@@ -37,62 +18,44 @@
   <!--- Table Header --->
   <div class="div_table_row">
     <div class="div_table_cell">
+    </div>
+    <div class="div_table_cell">
       <b>Name</b>
     </div>
     <div class="div_table_cell">
-      <b>Email</b>
+      <b>Cell &amp;Email</b>
+    </div>
+    <div class="div_table_cell">
+      <b>Label Heading</b>
+    </div>   
+    <div class="div_table_cell">
     </div>
     <div class="div_table_cell">
       <b>Address</b>
     </div>
   </div>
 
-<cfloop query="people">
+<cfloop query="group_people">
   <!--- Addresses for one people --->
-  <cfquery name="addresses" datasource="people">
-    select p.people_id, p.address_id,
-      a.address_1, a.address_2, a.address_3, a.city,
-      a.region, a.postal_code, c.title as country
-    from addresses as p
-
-    inner join addresses.addresses as a
-    on p.address_id = a.id
-
-    left outer join addresses.country_codes as c
-    on c.id = a.country_id
-
-    where p.people_id = #people.people_id#
-      and p.deleted_at is null
-      and is_primary = 1;
-  </cfquery>
+  <cfset addresses = new people.functions.queries.person().addresses(group_people.people_id)>
 
   <!--- Phone numbers for one people --->
-  <cfquery name="phones" datasource="people">
-    select p.country_code, p.area_code, p.phone_number, t.phone_type
-    from phone_numbers as p
-	
-    left outer join phone_types as t
-    on p.phone_type_id = t.id
-
-    where p.people_id = #people.people_id#
-    and p.show = 1
-    and p.deleted_at is null;
-  </cfquery>
+  <cfset phones = new people.functions.queries.person().phone_numbers(group_people.people_id)>
 
   <!--- Email addresses for one people --->
-  <cfquery name="emails" datasource="people">
-    select e.email
-    from people.email_addresses as e
-    where e.people_id = #people.people_id#
-    and e.primary = 1;
-  </cfquery>
+  <cfset emails = new people.functions.queries.person().email_addresses(group_people.people_id)>
 
   <cfoutput>
   <div class="div_table_row">
     <!--- Output name --->
     <div class="div_table_cell">
       <div>
-        <b>#people.known_name# #people.last_name#</b>
+        <b>#group_people.people_id#</b>
+      </div>
+    </div>    
+    <div class="div_table_cell">
+      <div>
+        <b>#group_people.known_name# #group_people.last_name#</b>
       </div>
     </div>
 
@@ -110,11 +73,24 @@
         </cfloop>
     </div>
 
+    <!--- Output label heading --->
+    <div class="div_table_cell">
+      <div>
+          <div>#group_people.mailing_label_name#</div>
+      </div>
+    </div>
+
     <!--- Output address --->
     <div class="div_table_cell">
-        <div>
-            <cfloop query="addresses">
-                <div>#addresses.address_1#</div>
+      <div>
+          <div>#addresses.address_id#</div>
+      </div>
+    </div>
+
+    <div class="div_table_cell">
+      <div>
+          <cfloop query="addresses">
+              <div>#addresses.address_1#</div>
                 <cfif addresses.address_2 neq ""><div>#addresses.address_2#</div></cfif>
                 <cfif addresses.address_3 neq ""><div>#addresses.address_3#</div></cfif>
                 <cfif addresses.city neq ""><div>#addresses.city#</div></cfif>

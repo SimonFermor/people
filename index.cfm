@@ -39,7 +39,14 @@
       </cfcase>
 
       <cfdefaultcase>
-        No page found
+        People
+        <ul>
+          <li><a href="/people/index.cfm?scope=persons&view=all_persons">All people</a></li>
+          <li><a href="/people/index.cfm?scope=persons&view=birthdays">Birthdays</a></li>
+          <li><a href="/people/index.cfm?scope=persons&view=phone_list">Phone List</a></li>
+          <li><a href="/people/index.cfm?scope=persons&view=contact_sheet">Contact Sheet</a></li>
+        </ul>
+      
       </cfdefaultcase>
     </cfswitch>
 
