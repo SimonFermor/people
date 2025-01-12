@@ -1,13 +1,8 @@
 <cfparam name="group_id" default="1">
 <cfparam name="incomplete_only" default="1">
 
-<cfquery name="groups" datasource="people">
-	select id, name, description
-	from groups
-	where id = '#group_id#';
-</cfquery>
-
-<cfset group_name = groups.name[1]>
+<cfset group = new people.functions.queries.groups().group(group_id)>
+<cfset group_name = group.name[1]>
 
 <html>
 <head>

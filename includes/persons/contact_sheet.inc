@@ -4,13 +4,8 @@
 <cfset column_counter = "">
 
 <!--- Get group details --->
-<cfquery name="groups" datasource="people">
-	select *
-	from groups
-	where id = '#group_id#';
-</cfquery>
-
-<cfset group_name = groups.name[1]>
+<cfset group = new people.functions.queries.groups().group(group_id)>
+<cfset group_name = group.name[1]>
 
 <html>
   <head>
