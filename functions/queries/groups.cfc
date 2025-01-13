@@ -1,5 +1,6 @@
 component {
 
+    // Birthdays for people in a group
     public query function birthdays(required any group_id){
 
         query_result = queryExecute(
@@ -9,13 +10,14 @@ component {
                 inner join people as p
                 on g.people_id = p.id
                 where (g.group_id = #group_id#)
-                and p.id not in (190)
+                and p.id not in (14,190)
             order by month(p.date_of_birth), day(p.date_of_birth);",
                 [], { datasource = "people"});
 
             return query_result;
     }
 
+    // Group details
     public query function group(required any group_id){
         query_result = queryExecute(
             "select id, name, description
@@ -26,6 +28,7 @@ component {
             return query_result;
     }
     
+    // People in a group
     public query function group_people(required any group_id){
         query_result = queryExecute(
             "select p.id as people_id, first_name, middle_names, last_name, 

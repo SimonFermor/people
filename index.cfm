@@ -1,54 +1,52 @@
-<cfparam name="scope" default="persons">
-<cfparam name="view" default="all_persons">
+<cfscript>
+  cfparam(name="scope", default="menu");
+  cfparam(name="view", default="menu");
 
-<cfinclude template="includes/layout/html_start.inc">
-<cfinclude template="includes/layout/head.inc">
-<cfinclude template="includes/layout/body_start.inc">
+  include "includes/layout/html_start.inc";
+  include "includes/layout/head.inc";
+  include "includes/layout/body_start.inc";
+
+  menu = {
+    "addresses": { 
+      "default": "all_addresses", 
+      "views": "all_addresses,one_address", 
+      "folder": "addresses"},
+    "organizations": {
+      "default": "all_organizations",
+      "views": "all_organizations, one_organization",
+      "folder": "organizations"},
+    "persons": {
+      "default": "all_persons",
+      "views": "all_persons,one_person,birthdays,contact_sheet,phone_list",
+      "folder": "persons"},
+    "quotes": {
+      "default": "all_quotes",
+      "views": "all_quotes,one_quote",
+      "folder": "quotes"}
+};
+
+if (scope != "menu") {
+  selected_menu = menu["#scope#"];
+}
+
+</cfscript>
 
 <main>
   <div class="container">
 
-    <cfswitch expression="#scope#">
-
-      <cfcase value="addresses">
-        <cfparam name="view" default="all_addresses">
-        <cfif listFindNoCase("all_addresses,one_address", view)>
-          <cfinclude template="includes/addresses/#view#.inc">
-        </cfif>
-      </cfcase>
-
-      <cfcase value="organizations">
-        <cfparam name="view" default="all_organizations">
-        <cfif listFindNoCase("all_organzations,one_organization", view)>
-          <cfinclude template="includes/organzations/#view#.inc">
-        </cfif>
-      </cfcase>
-
-      <cfcase value="persons">
-        <cfparam name="view" default="all_persons">
-        <cfif listFindNoCase("all_persons,one_person,birthdays,contact_sheet,phone_list", view)>
-          <cfinclude template="includes/persons/#view#.inc">
-        </cfif>
-      </cfcase>
-
-      <cfcase value="quotes">
-        <cfparam name="view" default="all_quotes">
-        <cfif listFindNoCase("all_quotes,one_quote", view)>
-          <cfinclude template="includes/quotes/#view#.inc">
-        </cfif>
-      </cfcase>
-
-      <cfdefaultcase>
-        People
-        <ul>
-          <li><a href="/people/index.cfm?scope=persons&view=all_persons">All people</a></li>
-          <li><a href="/people/index.cfm?scope=persons&view=birthdays">Birthdays</a></li>
-          <li><a href="/people/index.cfm?scope=persons&view=phone_list">Phone List</a></li>
-          <li><a href="/people/index.cfm?scope=persons&view=contact_sheet">Contact Sheet</a></li>
-        </ul>
-      
-      </cfdefaultcase>
-    </cfswitch>
+    <cfif scope eq "menu">
+      People
+      <ul>
+        <li><a href="/people/index.cfm?scope=persons&view=all_persons">All people</a></li>
+        <li><a href="/people/index.cfm?scope=persons&view=birthdays">Birthdays</a></li>
+        <li><a href="/people/index.cfm?scope=persons&view=phone_list">Phone List</a></li>
+        <li><a href="/people/index.cfm?scope=persons&view=contact_sheet">Contact Sheet</a></li>
+      </ul>
+    <cfelse>
+      <cfif listFindNoCase(selected_menu["views"], view)>
+        <cfinclude template="includes/#selected_menu["folder"]#/#view#.inc">
+      </cfif>      
+    </cfif>
 
   </div>
 </main>

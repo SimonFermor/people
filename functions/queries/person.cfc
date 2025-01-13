@@ -1,5 +1,6 @@
 component {
 
+    // Addresses for a person
     public query function addresses(required any people_id){
         query_result = queryExecute(
             "    select p.people_id, p.address_id,
@@ -21,6 +22,7 @@ component {
         return query_result;
     }
 
+    // Email addresses for a person
     public query function email_addresses(required any people_id){
         query_result = queryExecute(
             "select e.email
@@ -32,6 +34,7 @@ component {
         return query_result;
     }
 
+    // Phone numbers for a person
     public query function phone_numbers(required any people_id) {
         query_result = queryExecute(
             "select p.country_code, p.area_code, p.phone_number, t.phone_type
